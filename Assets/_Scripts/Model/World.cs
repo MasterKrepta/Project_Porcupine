@@ -43,6 +43,7 @@ public class World {
     }
 
     public void RandomizeTiles() {
+        Debug.Log("Tiles randomized");
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (Random.Range(0, 2) == 0) {

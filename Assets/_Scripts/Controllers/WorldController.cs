@@ -4,28 +4,41 @@ using UnityEngine;
 
 public class WorldController : MonoBehaviour {
 
+     static WorldController _instance;
+    public static WorldController Instance { get; protected set; }
+
     public Sprite floorSprite;
-    World world;
+    public World World { get; protected set; }
 	// Use this for initialization
 	void Start () {
+        if(_instance != null) {
+            Debug.LogError("There should be only one World Controller");
+        }
+        Instance = this;
+
         //CREATE world
-        world = new World();
-        world.RandomizeTiles();
+        World = new World();
+        
 
         //Create GO for each tile for visuals
-        for (int x = 0; x < world.Width; x++) {
-            for (int y = 0; y < world.Height; y++) {
+        for (int x = 0; x < World.Width; x++) {
+            for (int y = 0; y < World.Height; y++) {
+                Tile tile_data = World.GetTileAt(x, y);
+
                 GameObject tile_go = new GameObject();
                 tile_go.name = "Tile_" + x + "_" + y;
-                Tile tile_data = world.GetTileAt(x, y);
-                tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y);
-
+                tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y, 0) ;
+                tile_go.transform.SetParent(this.transform, true);
                 //ADD renderer but dont set sprite yet
-                SpriteRenderer tile_sr = tile_go.gameObject.AddComponent<SpriteRenderer>();
+                tile_go.AddComponent<SpriteRenderer>();
+
+                tile_data.RegisterTileTypeChanged( (tile) => { OnTileTypeChanged(tile, tile_go); });
+                
             }
         }
-	}
-
+        World.RandomizeTiles();
+    }
+    
 
     void OnTileTypeChanged(Tile tile_data, GameObject tile_go) {
         if (tile_data.Type == Tile.TileType.FLOOR) {
@@ -42,6 +55,6 @@ public class WorldController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		
+ 
 	}
 }

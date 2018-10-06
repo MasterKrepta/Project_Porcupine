@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Tile {
 
     public enum TileType {EMPTY, FLOOR}
 
     TileType type = TileType.EMPTY;
+
+    Action<Tile> OnTileTypeChanged;
 
     LooseObject looseObject;
     InstalledObject installedObject;
@@ -21,8 +24,14 @@ public class Tile {
         }
 
         set {
+            TileType oldType = type;
             type = value;
             //Call the callback 
+            if(OnTileTypeChanged != null && oldType != type) 
+                OnTileTypeChanged(this);
+            
+          
+                
         }
     }
 
@@ -45,5 +54,12 @@ public class Tile {
         this.x = x;
         this.y = y;
     }
-        
+
+    public void RegisterTileTypeChanged(Action<Tile> callback) {
+        OnTileTypeChanged += callback;
+    }
+    public void UnRegisterTileTypeChanged(Action<Tile> callback) {
+        OnTileTypeChanged -= callback;
+    }
+
 }
