@@ -57,4 +57,11 @@ public class WorldController : MonoBehaviour {
 	void Update () {
  
 	}
+
+    public Tile GetTileAtWorldCor(Vector3 coord) {
+        int x = Mathf.FloorToInt(coord.x);
+        int y = Mathf.FloorToInt(coord.y);
+
+        return WorldController.Instance.World.GetTileAt(x, y);
+    }
 }
