@@ -5,6 +5,9 @@ using UnityEngine;
 public class World {
 
     Tile[,] tiles;
+
+    Dictionary<string, InstalledObject> installedPrototypes;
+
     int width;
     int height;
 
@@ -40,17 +43,33 @@ public class World {
             }
         }
         Debug.Log("World created with " + (width * height) + " tiles");
+
+
+        CreateInstalledObjPrototypes();
     }
 
-    public void RandomizeTiles() {
+    void CreateInstalledObjPrototypes() {
+        installedPrototypes = new Dictionary<string, InstalledObject>();
+
+        
+
+        installedPrototypes.Add("Wall", InstalledObject.CreatePrototype(
+                                                                "Wall",
+                                                                0, // Impassable
+                                                                1, 1)
+            );
+    }
+
+
+        public void RandomizeTiles() {
         Debug.Log("Tiles randomized");
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (Random.Range(0, 2) == 0) {
-                    tiles[x, y].Type = Tile.TileType.EMPTY;
+                    tiles[x, y].Type = TileType.EMPTY;
                 }
                 else {
-                    tiles[x, y].Type = Tile.TileType.FLOOR;
+                    tiles[x, y].Type = TileType.FLOOR;
                 }
 
             }

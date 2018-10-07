@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+
+public enum TileType { EMPTY, FLOOR }
 public class Tile {
 
-    public enum TileType {EMPTY, FLOOR}
+    
 
     TileType type = TileType.EMPTY;
 
@@ -29,8 +31,6 @@ public class Tile {
             //Call the callback 
             if(OnTileTypeChanged != null && oldType != type) 
                 OnTileTypeChanged(this);
-            
-          
                 
         }
     }
@@ -39,8 +39,6 @@ public class Tile {
         get {
             return x;
         }
-
-    
     }
 
     public int Y {
@@ -60,6 +58,20 @@ public class Tile {
     }
     public void UnRegisterTileTypeChanged(Action<Tile> callback) {
         OnTileTypeChanged -= callback;
+    }
+
+    public bool PlaceObject(InstalledObject objInstance) {
+        if (objInstance == null) {
+            installedObject = null;
+            return true;
+        }
+        if (installedObject != null) {
+            Debug.LogError("Trying to assign installed object when it already has one");
+            return false;
+        }
+
+        installedObject = objInstance;
+        return true;
     }
 
 }

@@ -11,7 +11,11 @@ public class MouseController : MonoBehaviour {
 
     Vector3 dragStartPos;
 
-    Tile.TileType buildModeTile = Tile.TileType.FLOOR;
+
+    bool buildModeIsObjects = false;
+    TileType buildModeTile = TileType.FLOOR;
+    string buildModeObjType;
+
     List<GameObject> dragPreviewGO = new List<GameObject>();
     // Use this for initialization
     void Start () {
@@ -98,26 +102,40 @@ public class MouseController : MonoBehaviour {
         }
         // end drag
         if (Input.GetMouseButtonUp(0)) {
-            
-
             for (int x = startX; x <= endX; x++) {
                 for (int y = startY; y <= endY; y++) {
                     Tile t = WorldController.Instance.World.GetTileAt(x, y);
                     if (t != null) {
-                        t.Type = buildModeTile;
+                        if (buildModeIsObjects == true) {
+                            //Create installed object and assign
+
+                            //FIXME: we are just assuming walls right now
+                            //WorldController.Instance.World.PlaceInstalledObj(buildModeObjType, t);
+
+                    }
+                        else {
+                            //Change Tile 
+                            t.Type = buildModeTile;
+                        }
                     }
                 }
             }
-
         }
     }
 
     public void SetMode_BuildFloor() {
-        buildModeTile = Tile.TileType.FLOOR;
+        buildModeIsObjects = false;
+        buildModeTile = TileType.FLOOR;
     }
 
     public void SetMode_Bulldoze() {
-        buildModeTile = Tile.TileType.EMPTY;
+        buildModeIsObjects = false;
+        buildModeTile = TileType.EMPTY;
+    }
+
+    public void SetMode_BuildInstalledObject(string objType) {
+        buildModeIsObjects = true;
+        buildModeObjType = objType;
     }
 
     //private void UpdateCursor() {
