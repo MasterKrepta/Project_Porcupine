@@ -1,13 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 public class World {
 
     Tile[,] tiles;
 
     Dictionary<string, InstalledObject> installedPrototypes;
-
+    Action<InstalledObject> OnInstalledObject;
     int width;
     int height;
 
@@ -60,12 +62,32 @@ public class World {
             );
     }
 
+    public void PlaceInstalledObj(string objType, Tile t) {
+        //tODO assuming 1x1 tiles - change later
+        if(installedPrototypes.ContainsKey(objType) == false) {
+            Debug.LogError("Installed objs doesnt contain prototype for key " + objType);
+            return;
+        }
+        InstalledObject obj = InstalledObject.PlaceInstance(installedPrototypes[objType], t);
+
+
+        if(obj == null) {
+            Debug.LogError("Failed to place object - maybe already occupied");
+            return;
+        }
+        if (OnInstalledObject != null) {
+            OnInstalledObject(obj);
+        }
+        
+    }
+
+    
 
         public void RandomizeTiles() {
         Debug.Log("Tiles randomized");
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                if (Random.Range(0, 2) == 0) {
+                if (UnityEngine.Random.Range(0, 2) == 0) {
                     tiles[x, y].Type = TileType.EMPTY;
                 }
                 else {
@@ -79,9 +101,17 @@ public class World {
 
     public Tile GetTileAt(int x, int y) {
         if (x > Width || x < 0 || y > Height || y < 0) {
-            Debug.LogWarning("Tile (" + x + "," + y + ") is out of range.");
+            //Debug.LogWarning("Tile (" + x + "," + y + ") is out of range.");
             return null;
         }
         return tiles[x, y];
     }
+
+    public void RegisterInstalledObject(Action<InstalledObject> callback) {
+        OnInstalledObject += callback;
+    }
+    public void UnRegisterInstalledObject(Action<InstalledObject> callback) {
+        OnInstalledObject -= callback;
+    }
 }
+

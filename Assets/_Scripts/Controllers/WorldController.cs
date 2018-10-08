@@ -6,12 +6,15 @@ using System.Linq;
 
 public class WorldController : MonoBehaviour {
 
+    
      static WorldController _instance;
     public static WorldController Instance { get; protected set; }
 
-    public Sprite floorSprite;
+    public Sprite floorSprite; // FIXME
+    public Sprite wallSprite; // FIXME
 
     Dictionary<Tile, GameObject> tileGamobjectMap;
+    Dictionary<InstalledObject, GameObject> installedObjectsMap;
     public World World { get; protected set; }
 	// Use this for initialization
 	void Start () {
@@ -23,9 +26,11 @@ public class WorldController : MonoBehaviour {
         //CREATE world
         World = new World();
 
+        World.RegisterInstalledObject(OnInstalledObjectCreated);
+
         //Instantiate Dictionary to track data to objects
         tileGamobjectMap = new Dictionary<Tile, GameObject>();
-        
+        installedObjectsMap = new Dictionary<InstalledObject, GameObject>();
 
         //Create GO for each tile for visuals
         for (int x = 0; x < World.Width; x++) {
@@ -91,5 +96,26 @@ public class WorldController : MonoBehaviour {
         int y = Mathf.FloorToInt(coord.y);
 
         return WorldController.Instance.World.GetTileAt(x, y);
+    }
+
+    public void OnInstalledObjectCreated(InstalledObject obj) {
+        GameObject obj_go = new GameObject();
+        installedObjectsMap.Add(obj, obj_go); // Pair to dictionary
+
+        obj_go.name = obj.ObjectType + "_" + obj.Tile.X + "_" + obj.Tile.Y;
+        
+        obj_go.transform.position = new Vector3(obj.Tile.X, obj.Tile.Y, 0);
+        
+        obj_go.transform.SetParent(this.transform, true);
+
+        //ADD renderer but dont set sprite yet
+        obj_go.AddComponent<SpriteRenderer>().sprite = wallSprite ; // FIXME   
+        
+
+        obj.RegisterOnChanged(OnInstalledObjChanged);
+    }
+
+    void OnInstalledObjChanged(InstalledObject obj) {
+        Debug.LogError("on installed changed Not Implimented yet");
     }
 }

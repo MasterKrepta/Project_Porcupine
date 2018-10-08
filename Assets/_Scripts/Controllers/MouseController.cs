@@ -110,7 +110,7 @@ public class MouseController : MonoBehaviour {
                             //Create installed object and assign
 
                             //FIXME: we are just assuming walls right now
-                            //WorldController.Instance.World.PlaceInstalledObj(buildModeObjType, t);
+                            WorldController.Instance.World.PlaceInstalledObj(buildModeObjType, t);
 
                     }
                         else {
