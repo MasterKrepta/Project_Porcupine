@@ -47,6 +47,16 @@ public class Tile {
         }
     }
 
+    public InstalledObject InstalledObject {
+        get {
+            return installedObject;
+        }
+
+        protected set {
+            installedObject = value;
+        }
+    }
+
     public Tile(World world, int x, int y) {
         this.world = world;
         this.x = x;
@@ -62,15 +72,15 @@ public class Tile {
 
     public bool PlaceObject(InstalledObject objInstance) {
         if (objInstance == null) {
-            installedObject = null;
+            InstalledObject = null;
             return true;
         }
-        if (installedObject != null) {
+        if (InstalledObject != null) {
             Debug.LogError("Trying to assign installed object when it already has one");
             return false;
         }
 
-        installedObject = objInstance;
+        InstalledObject = objInstance;
         return true;
     }
 

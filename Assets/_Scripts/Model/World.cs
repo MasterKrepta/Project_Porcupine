@@ -58,7 +58,8 @@ public class World {
         installedPrototypes.Add("Wall", InstalledObject.CreatePrototype(
                                                                 "Wall",
                                                                 0, // Impassable
-                                                                1, 1)
+                                                                1, 1,
+                                                                true)
             );
     }
 

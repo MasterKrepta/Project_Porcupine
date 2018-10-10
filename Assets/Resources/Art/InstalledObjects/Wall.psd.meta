@@ -3,13 +3,17 @@ guid: 52fadec2c769ced4ebf2b7a82e785941
 TextureImporter:
   fileIDToRecycleName:
     21300000: Wall_
-    21300002: WALL_ES
+    21300002: Wall_ES
     21300004: Wall_2
     21300006: Wall_3
     21300008: Wall_4
     21300010: Wall_5
     21300012: Wall_6
     21300014: Wall_7
+    21300016: Wall_E
+    21300018: Wall_S
+    21300020: Wall_N
+    21300022: Wall_NESW
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -134,7 +138,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WALL_ES
+      name: Wall_ES
       rect:
         serializedVersion: 2
         x: 0
@@ -149,6 +153,86 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: f541d10d0dd0ff84cae41f80bdcf6770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall_E
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 32
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04fd211c7a23f0c4294c3293caf18175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall_S
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 128
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: daacaa85259f0f645ac43ec1d56a8ab7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall_N
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 160
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 828b06b7b98849b4e9e6fdd76e7ec0a6
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Wall_NESW
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 193
+        width: 32
+        height: 32
+      alignment: 6
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0df8f4f082b5f194196f26a634234975
       vertices: []
       indices: 
       edges: []

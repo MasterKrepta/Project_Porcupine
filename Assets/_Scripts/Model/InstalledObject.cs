@@ -16,6 +16,8 @@ public class InstalledObject
     int width;
     int height;
 
+    bool linksToNeighbour = false;
+
     Action<InstalledObject> OnChanged;
     private string _objectType;
 
@@ -45,12 +47,24 @@ public class InstalledObject
         }
     }
 
-    static public InstalledObject CreatePrototype(string objectType, float movementCost, int width = 1, int height = 1) {
+    public bool LinksToNeighbour {
+        get {
+            return linksToNeighbour;
+        }
+
+        protected set {
+            linksToNeighbour = value;
+        }
+    }
+
+    static public InstalledObject CreatePrototype(string objectType, float movementCost, int width = 1, int height = 1, bool linksToNeighbor = false) {
         InstalledObject obj = new InstalledObject();
+
         obj.ObjectType = objectType;
         obj.movementCost = movementCost;
         obj.width = width;
         obj.height = height;
+        obj.LinksToNeighbour = linksToNeighbor;
 
         return obj;
     }
@@ -62,6 +76,7 @@ public class InstalledObject
         obj.movementCost = proto.movementCost;
         obj.width = proto.width;
         obj.height = proto.height;
+        obj.LinksToNeighbour = proto.LinksToNeighbour;
 
         obj.Tile = tile;
 
