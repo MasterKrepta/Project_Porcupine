@@ -12,9 +12,10 @@ public class Tile {
     TileType type = TileType.EMPTY;
 
     Action<Tile> OnTileTypeChanged;
+    
 
-    LooseObject looseObject;
-    InstalledObject installedObject;
+    Inventory inventory;
+    Furniture furniture;
 
     World world;
     int x;
@@ -47,18 +48,28 @@ public class Tile {
         }
     }
 
-    public InstalledObject InstalledObject {
+    public Furniture Furniture {
         get {
-            return installedObject;
+            return furniture;
         }
 
         protected set {
-            installedObject = value;
+            furniture = value;
+        }
+    }
+
+    public World World {
+        get {
+            return world;
+        }
+
+        protected set {
+            world = value;
         }
     }
 
     public Tile(World world, int x, int y) {
-        this.world = world;
+        this.World = world;
         this.x = x;
         this.y = y;
     }
@@ -70,17 +81,19 @@ public class Tile {
         OnTileTypeChanged -= callback;
     }
 
-    public bool PlaceObject(InstalledObject objInstance) {
+   
+
+    public bool PlaceFurniture(Furniture objInstance) {
         if (objInstance == null) {
-            InstalledObject = null;
+            Furniture = null;
             return true;
         }
-        if (InstalledObject != null) {
+        if (Furniture != null) {
             Debug.LogError("Trying to assign installed object when it already has one");
             return false;
         }
 
-        InstalledObject = objInstance;
+        Furniture = objInstance;
         return true;
     }
 

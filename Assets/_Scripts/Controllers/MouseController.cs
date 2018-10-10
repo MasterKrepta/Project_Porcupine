@@ -133,7 +133,7 @@ public class MouseController : MonoBehaviour {
         buildModeTile = TileType.EMPTY;
     }
 
-    public void SetMode_BuildInstalledObject(string objType) {
+    public void SetMode_BuildFurniture(string objType) {
         buildModeIsObjects = true;
         buildModeObjType = objType;
     }

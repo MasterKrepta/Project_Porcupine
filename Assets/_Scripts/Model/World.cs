@@ -8,8 +8,8 @@ public class World {
 
     Tile[,] tiles;
 
-    Dictionary<string, InstalledObject> installedPrototypes;
-    Action<InstalledObject> OnInstalledObject;
+    Dictionary<string, Furniture> installedPrototypes;
+    Action<Furniture> OnFurniture;
     int width;
     int height;
 
@@ -44,18 +44,18 @@ public class World {
                 tiles[x, y] = new Tile(this, x, y);
             }
         }
-        Debug.Log("World created with " + (width * height) + " tiles");
+        //Debug.Log("World created with " + (width * height) + " tiles");
 
 
         CreateInstalledObjPrototypes();
     }
 
     void CreateInstalledObjPrototypes() {
-        installedPrototypes = new Dictionary<string, InstalledObject>();
+        installedPrototypes = new Dictionary<string, Furniture>();
 
         
 
-        installedPrototypes.Add("Wall", InstalledObject.CreatePrototype(
+        installedPrototypes.Add("Wall", Furniture.CreatePrototype(
                                                                 "Wall",
                                                                 0, // Impassable
                                                                 1, 1,
@@ -69,15 +69,15 @@ public class World {
             Debug.LogError("Installed objs doesnt contain prototype for key " + objType);
             return;
         }
-        InstalledObject obj = InstalledObject.PlaceInstance(installedPrototypes[objType], t);
+        Furniture obj = Furniture.PlaceInstance(installedPrototypes[objType], t);
 
 
         if(obj == null) {
             Debug.LogError("Failed to place object - maybe already occupied");
             return;
         }
-        if (OnInstalledObject != null) {
-            OnInstalledObject(obj);
+        if (OnFurniture != null) {
+            OnFurniture(obj);
         }
         
     }
@@ -85,7 +85,7 @@ public class World {
     
 
         public void RandomizeTiles() {
-        Debug.Log("Tiles randomized");
+        //Debug.Log("Tiles randomized");
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (UnityEngine.Random.Range(0, 2) == 0) {
@@ -108,11 +108,11 @@ public class World {
         return tiles[x, y];
     }
 
-    public void RegisterInstalledObject(Action<InstalledObject> callback) {
-        OnInstalledObject += callback;
+    public void RegisterInstalledObject(Action<Furniture> callback) {
+        OnFurniture += callback;
     }
-    public void UnRegisterInstalledObject(Action<InstalledObject> callback) {
-        OnInstalledObject -= callback;
+    public void UnRegisterInstalledObject(Action<Furniture> callback) {
+        OnFurniture -= callback;
     }
 }
 
