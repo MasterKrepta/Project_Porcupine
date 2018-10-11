@@ -21,7 +21,7 @@ public class WorldController : MonoBehaviour {
 
     public World World { get; protected set; }
 	// Use this for initialization
-	void Start () {
+	void OnEnable () {
 
         LoadSprites();
 
@@ -33,7 +33,7 @@ public class WorldController : MonoBehaviour {
         //CREATE world
         World = new World();
 
-        World.RegisterInstalledObject(OnFurnitureCreated);
+        World.RegisterFurniture(OnFurnitureCreated);
 
         //Instantiate Dictionary to track data to objects
         tileGamobjectMap = new Dictionary<Tile, GameObject>();
@@ -54,7 +54,7 @@ public class WorldController : MonoBehaviour {
                 tile_go.AddComponent<SpriteRenderer>().sprite = emptySprite;
                 
 
-                tile_data.RegisterTileTypeChanged(OnTileTypeChanged);
+                World.RegisterTileChanged(OnTileChanged); //! WAS TILE DATA - if this works fine delete the comment
             }
         }
         //World.RandomizeTiles();
@@ -82,14 +82,14 @@ public class WorldController : MonoBehaviour {
 
             tileGamobjectMap.Remove(tile_data);
 
-            tile_data.UnRegisterTileTypeChanged(OnTileTypeChanged);
+            tile_data.UnRegisterTileChanged(OnTileChanged);
 
             Destroy(tile_go);
 
             //AFTER this is called we would call a new function to build the next level. 
         }
     }
-    void OnTileTypeChanged(Tile tile_data) {
+    void OnTileChanged(Tile tile_data) {
         if(tileGamobjectMap.ContainsKey(tile_data) == false) {
             Debug.LogError("No tile data, did you not add to the dictionary or unregister a callback");
             return;
@@ -107,6 +107,7 @@ public class WorldController : MonoBehaviour {
         else if (tile_data.Type == TileType.EMPTY) {
             
             tile_go.GetComponent<SpriteRenderer>().sprite = null;
+            tile_go.GetComponent<SpriteRenderer>().sortingLayerName = "Floor";
         }
         else {
             Debug.LogError("OnTileTypeChanged - unrecognized tile type");
@@ -134,7 +135,7 @@ public class WorldController : MonoBehaviour {
         
         //obj_go.AddComponent<SpriteRenderer>().sprite = installedObjSprites["Wall_"] ; // TODO   : fix me
         furn_go.AddComponent<SpriteRenderer>().sprite = GetSpriteForFurniture(furn);
-        
+        furn_go.GetComponent<SpriteRenderer>().sortingLayerName = "Wall";
 
         furn.RegisterOnChanged(OnFurnitureChanged);
     }

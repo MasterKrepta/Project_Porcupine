@@ -11,7 +11,7 @@ public class Tile {
 
     TileType type = TileType.EMPTY;
 
-    Action<Tile> OnTileTypeChanged;
+    Action<Tile> cbTileChanged;
     
 
     Inventory inventory;
@@ -30,8 +30,8 @@ public class Tile {
             TileType oldType = type;
             type = value;
             //Call the callback 
-            if(OnTileTypeChanged != null && oldType != type) 
-                OnTileTypeChanged(this);
+            if(cbTileChanged != null && oldType != type) 
+                cbTileChanged(this);
                 
         }
     }
@@ -74,11 +74,11 @@ public class Tile {
         this.y = y;
     }
 
-    public void RegisterTileTypeChanged(Action<Tile> callback) {
-        OnTileTypeChanged += callback;
+    public void RegisterTileChanged(Action<Tile> callback) {
+        cbTileChanged += callback;
     }
-    public void UnRegisterTileTypeChanged(Action<Tile> callback) {
-        OnTileTypeChanged -= callback;
+    public void UnRegisterTileChanged(Action<Tile> callback) {
+        cbTileChanged -= callback;
     }
 
    

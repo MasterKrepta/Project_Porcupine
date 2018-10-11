@@ -77,11 +77,9 @@ public class Furniture
             Debug.LogError("Place instance - pos validity returned false");
             return null;
         }
-
-       
+               
         //! We know we can place on a valid position
-
-
+        
         Furniture obj = new Furniture();
 
         obj.ObjectType = proto.ObjectType;

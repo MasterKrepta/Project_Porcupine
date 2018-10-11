@@ -9,7 +9,8 @@ public class World {
     Tile[,] tiles;
 
     Dictionary<string, Furniture> installedPrototypes;
-    Action<Furniture> OnFurniture;
+    Action<Furniture> cbFurniture;
+    Action<Tile> cbTileChanged;
     int width;
     int height;
 
@@ -42,6 +43,7 @@ public class World {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 tiles[x, y] = new Tile(this, x, y);
+                tiles[x, y].RegisterTileChanged(OnTileChanged);
             }
         }
         //Debug.Log("World created with " + (width * height) + " tiles");
@@ -76,8 +78,8 @@ public class World {
             Debug.LogError("Failed to place object - maybe already occupied");
             return;
         }
-        if (OnFurniture != null) {
-            OnFurniture(obj);
+        if (cbFurniture != null) {
+            cbFurniture(obj);
         }
         
     }
@@ -108,11 +110,27 @@ public class World {
         return tiles[x, y];
     }
 
-    public void RegisterInstalledObject(Action<Furniture> callback) {
-        OnFurniture += callback;
+    public void RegisterFurniture(Action<Furniture> callback) {
+        cbFurniture += callback;
     }
-    public void UnRegisterInstalledObject(Action<Furniture> callback) {
-        OnFurniture -= callback;
+    public void UnRegisterFurniture(Action<Furniture> callback) {
+        cbFurniture -= callback;
     }
+
+    public void RegisterTileChanged(Action<Tile>  callback) {
+        cbTileChanged += callback;
+    }
+    public void UnRegisterTileChanged(Action<Tile> callback) {
+        cbTileChanged -= callback;
+    }
+
+    public void OnTileChanged(Tile t) {
+        if (cbTileChanged == null)
+            return;
+
+        cbTileChanged(t);
+
+    }
+   
 }
 
