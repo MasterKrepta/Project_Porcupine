@@ -54,6 +54,11 @@ public class MouseController : MonoBehaviour {
         }
 
         //Start of drag
+        if (Input.GetMouseButtonDown(0)) {
+            dragStartPos = currFramePos;
+
+        }
+
         int startX = Mathf.FloorToInt(dragStartPos.x);
         int endX = Mathf.FloorToInt(currFramePos.x);
         int startY = Mathf.FloorToInt(dragStartPos.y);
@@ -71,10 +76,7 @@ public class MouseController : MonoBehaviour {
             startY = temp;
         }
 
-        if (Input.GetMouseButtonDown(0)) {
-            dragStartPos = currFramePos;
-
-        }
+        
 
         //Clean up old drag previews
         while (dragPreviewGO.Count > 0) {
@@ -85,6 +87,7 @@ public class MouseController : MonoBehaviour {
             }
 
         }
+
         if (Input.GetMouseButton(0)) {
             //Display a preview of drag area
             for (int x = startX; x <= endX; x++) {
@@ -100,19 +103,39 @@ public class MouseController : MonoBehaviour {
             }
 
         }
+
         // end drag
         if (Input.GetMouseButtonUp(0)) {
             for (int x = startX; x <= endX; x++) {
                 for (int y = startY; y <= endY; y++) {
                     Tile t = WorldController.Instance.World.GetTileAt(x, y);
+
                     if (t != null) {
                         if (buildModeIsObjects == true) {
                             //Create installed object and assign
 
-                            //FIXME: we are just assuming walls right now
-                            WorldController.Instance.World.PlaceInstalledObj(buildModeObjType, t);
+                            //TODO instantly builds the furniture
+                            //WorldController.Instance.World.PlaceInstalledObj(buildModeObjType, t);
 
-                    }
+                            //Check if we can build here
+                            string furnitureType = buildModeObjType;
+                            if (WorldController.Instance.World.IsFurniturePlacementValid(furnitureType, t) && 
+                                    t.pendingFurnitureJob == null) {
+
+                                Job j = new Job(t, (theJob) => {
+                                    WorldController.Instance.World.PlaceFurniture(furnitureType, theJob.Tile);
+                                    t.pendingFurnitureJob = null;
+                                });
+
+                                //TODO dont like manually setting, too easy to forget to set/clear them
+                                t.pendingFurnitureJob = j;
+                                j.RegisterJobCancel( (theJob)  => { theJob.Tile.pendingFurnitureJob = null; });
+
+                                WorldController.Instance.World.JobQueue.Enqueue(j);
+                                Debug.Log("Queue Size: " + WorldController.Instance.World.JobQueue.Count);
+                            }
+
+                        }
                         else {
                             //Change Tile 
                             t.Type = buildModeTile;
@@ -121,6 +144,10 @@ public class MouseController : MonoBehaviour {
                 }
             }
         }
+    }
+
+    void OnFurnitureJobComplete(string furnitureType, Tile t) {
+        
     }
 
     public void SetMode_BuildFloor() {

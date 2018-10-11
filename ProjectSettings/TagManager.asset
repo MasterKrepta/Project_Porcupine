@@ -38,9 +38,6 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: TileUI
-    uniqueID: 647923813
-    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
@@ -49,4 +46,7 @@ TagManager:
     locked: 0
   - name: Wall
     uniqueID: 3939008349
+    locked: 0
+  - name: TileUI
+    uniqueID: 647923813
     locked: 0

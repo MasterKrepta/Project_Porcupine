@@ -57,6 +57,16 @@ public class Furniture
         }
     }
 
+    Func<Tile, bool> FuncPosValidation {
+        get {
+            return funcPosValidation;
+        }
+
+        set {
+            funcPosValidation = value;
+        }
+    }
+
     static public Furniture CreatePrototype(string objectType, float movementCost, int width = 1, int height = 1, bool linksToNeighbor = false) {
         Furniture obj = new Furniture();
 
@@ -66,14 +76,14 @@ public class Furniture
         obj.height = height;
         obj.LinksToNeighbour = linksToNeighbor;
 
-        obj.funcPosValidation = obj.IsValidPos;
+        obj.FuncPosValidation = obj.__IsValidPos;
 
         return obj;
     }
 
     static public Furniture PlaceInstance(Furniture proto, Tile tile) {
 
-        if (proto.funcPosValidation(tile) == false) {
+        if (proto.FuncPosValidation(tile) == false) {
             Debug.LogError("Place instance - pos validity returned false");
             return null;
         }
@@ -127,8 +137,8 @@ public class Furniture
         //TODO: Assuming 1x1
 
     }
-
-    public bool IsValidPos(Tile t) {
+    //TODO these shouldnt be called directly
+    public bool  __IsValidPos(Tile t) {
         //Check if tile is floor and doesnt contain furniture
         if (t.Type != TileType.FLOOR) {
             return false;
@@ -139,7 +149,7 @@ public class Furniture
         return true;
     }
 
-    public bool IsValidPos_Door(Tile t) {
+    public bool __IsValidPos_Door(Tile t) {
         //Check for a wall on east and west side, or north south
         return true;
     }
@@ -150,4 +160,10 @@ public class Furniture
     public void UnRegisterOnChanged(Action<Furniture> callback) {
         OnChanged -= callback;
     }
+
+    public bool IsValidPosition(Tile t) {
+        return FuncPosValidation(t);
+    }
+
+    
 }

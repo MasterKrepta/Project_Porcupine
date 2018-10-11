@@ -7,8 +7,6 @@ using System;
 public enum TileType { EMPTY, FLOOR }
 public class Tile {
 
-    
-
     TileType type = TileType.EMPTY;
 
     Action<Tile> cbTileChanged;
@@ -17,6 +15,9 @@ public class Tile {
     Inventory inventory;
     Furniture furniture;
 
+    public Job pendingFurnitureJob;
+    
+    
     World world;
     int x;
     int y;

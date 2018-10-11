@@ -8,13 +8,15 @@ public class World {
 
     Tile[,] tiles;
 
-    Dictionary<string, Furniture> installedPrototypes;
+    Dictionary<string, Furniture> furnPrototypes;
     Action<Furniture> cbFurniture;
     Action<Tile> cbTileChanged;
+
+    //TODO will proboboly be replaced with dedicated job queue class
+    Queue<Job> jobQueue;
+
     int width;
     int height;
-
-
     public int Width {
         get {
             return width;
@@ -24,7 +26,6 @@ public class World {
             width = value;
         }
     }
-
     public int Height {
         get {
             return height;
@@ -34,7 +35,20 @@ public class World {
             height = value;
         }
     }
+
+    public Queue<Job> JobQueue {
+        get {
+            return jobQueue;
+        }
+
+        set {
+            jobQueue = value;
+        }
+    }
+
     public World(int width = 100, int height = 100) {
+        JobQueue = new Queue<Job>();
+
         this.Width = width;
         this.Height = height;
 
@@ -49,15 +63,13 @@ public class World {
         //Debug.Log("World created with " + (width * height) + " tiles");
 
 
-        CreateInstalledObjPrototypes();
+        CreateFurnPrototypes();
     }
 
-    void CreateInstalledObjPrototypes() {
-        installedPrototypes = new Dictionary<string, Furniture>();
+    void CreateFurnPrototypes() {
+        furnPrototypes = new Dictionary<string, Furniture>();
 
-        
-
-        installedPrototypes.Add("Wall", Furniture.CreatePrototype(
+        furnPrototypes.Add("Wall", Furniture.CreatePrototype(
                                                                 "Wall",
                                                                 0, // Impassable
                                                                 1, 1,
@@ -65,13 +77,13 @@ public class World {
             );
     }
 
-    public void PlaceInstalledObj(string objType, Tile t) {
+    public void PlaceFurniture(string objType, Tile t) {
         //tODO assuming 1x1 tiles - change later
-        if(installedPrototypes.ContainsKey(objType) == false) {
+        if(furnPrototypes.ContainsKey(objType) == false) {
             Debug.LogError("Installed objs doesnt contain prototype for key " + objType);
             return;
         }
-        Furniture obj = Furniture.PlaceInstance(installedPrototypes[objType], t);
+        Furniture obj = Furniture.PlaceInstance(furnPrototypes[objType], t);
 
 
         if(obj == null) {
@@ -131,6 +143,9 @@ public class World {
         cbTileChanged(t);
 
     }
-   
+
+    public bool IsFurniturePlacementValid(string furnType, Tile t) {
+        return furnPrototypes[furnType].IsValidPosition(t);
+    }
 }
 
