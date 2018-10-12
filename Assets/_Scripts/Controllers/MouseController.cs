@@ -11,11 +11,6 @@ public class MouseController : MonoBehaviour {
 
     Vector3 dragStartPos;
 
-
-    bool buildModeIsObjects = false;
-    TileType buildModeTile = TileType.FLOOR;
-    string buildModeObjType;
-
     List<GameObject> dragPreviewGO = new List<GameObject>();
     // Use this for initialization
     void Start () {
@@ -53,7 +48,7 @@ public class MouseController : MonoBehaviour {
             return;
         }
 
-        //Start of drag
+        //!Start of drag
         if (Input.GetMouseButtonDown(0)) {
             dragStartPos = currFramePos;
 
@@ -89,6 +84,8 @@ public class MouseController : MonoBehaviour {
         }
 
         if (Input.GetMouseButton(0)) {
+
+            
             //Display a preview of drag area
             for (int x = startX; x <= endX; x++) {
                 for (int y = startY; y <= endY; y++) {
@@ -104,79 +101,23 @@ public class MouseController : MonoBehaviour {
 
         }
 
-        // end drag
+        //! end drag
         if (Input.GetMouseButtonUp(0)) {
+            BuildModeController bmc = GameObject.FindObjectOfType<BuildModeController>();
+
             for (int x = startX; x <= endX; x++) {
                 for (int y = startY; y <= endY; y++) {
                     Tile t = WorldController.Instance.World.GetTileAt(x, y);
 
                     if (t != null) {
-                        if (buildModeIsObjects == true) {
-                            //Create installed object and assign
-
-                            //TODO instantly builds the furniture
-                            //WorldController.Instance.World.PlaceInstalledObj(buildModeObjType, t);
-
-                            //Check if we can build here
-                            string furnitureType = buildModeObjType;
-                            if (WorldController.Instance.World.IsFurniturePlacementValid(furnitureType, t) && 
-                                    t.pendingFurnitureJob == null) {
-
-                                Job j = new Job(t, (theJob) => {
-                                    WorldController.Instance.World.PlaceFurniture(furnitureType, theJob.Tile);
-                                    t.pendingFurnitureJob = null;
-                                });
-
-                                //TODO dont like manually setting, too easy to forget to set/clear them
-                                t.pendingFurnitureJob = j;
-                                j.RegisterJobCancel( (theJob)  => { theJob.Tile.pendingFurnitureJob = null; });
-
-                                WorldController.Instance.World.JobQueue.Enqueue(j);
-                                Debug.Log("Queue Size: " + WorldController.Instance.World.JobQueue.Count);
-                            }
-
-                        }
-                        else {
-                            //Change Tile 
-                            t.Type = buildModeTile;
-                        }
+                        //Call build mode controller do build
+                        bmc.DoBuild(t);
                     }
                 }
             }
         }
     }
 
-    void OnFurnitureJobComplete(string furnitureType, Tile t) {
-        
-    }
-
-    public void SetMode_BuildFloor() {
-        buildModeIsObjects = false;
-        buildModeTile = TileType.FLOOR;
-    }
-
-    public void SetMode_Bulldoze() {
-        buildModeIsObjects = false;
-        buildModeTile = TileType.EMPTY;
-    }
-
-    public void SetMode_BuildFurniture(string objType) {
-        buildModeIsObjects = true;
-        buildModeObjType = objType;
-    }
-
-    //private void UpdateCursor() {
-    //    //Update Circle Pos
-    //    Tile tileUnderMouse = WorldController.Instance.GetTileAtWorldCor(currFramePos);
-    //    if (tileUnderMouse != null) {
-    //        cursor.SetActive(true);
-    //        Vector3 cursorPos = new Vector3(tileUnderMouse.X, tileUnderMouse.Y, 0);
-    //        cursor.transform.position = cursorPos;
-    //    }
-    //    else {
-    //        cursor.SetActive(false);
-    //    }
-    //}
 
 
 }
