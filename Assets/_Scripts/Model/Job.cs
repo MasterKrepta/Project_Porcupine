@@ -11,6 +11,8 @@ public class Job  {
     Tile tile;
     float jobTime;
 
+    //TODO THIS IS AWEFUL - change in the future
+    public string jobObjectType;
 
     Action<Job> cbJobComplete;
     Action<Job> cbJobCancel;
@@ -25,8 +27,9 @@ public class Job  {
         }
     }
 
-    public Job(Tile tile, Action<Job> cbJobComplete, float jobTime = 1f) {
+    public Job(Tile tile, string jobObjectType, Action<Job> cbJobComplete, float jobTime = 1f) {
         this.Tile = tile;
+        this.jobObjectType = jobObjectType;
         this.cbJobComplete += cbJobComplete;
     }
 
@@ -35,6 +38,13 @@ public class Job  {
     }
     public void RegisterJobCancel(Action<Job> cb) {
         cbJobCancel += cb;
+    }
+
+    public void UnRegisterJobComplete(Action<Job> cb) {
+        cbJobComplete -= cb;
+    }
+    public void UnRegisterJobCancel(Action<Job> cb) {
+        cbJobCancel -= cb;
     }
 
     public void DoWork(float workTime) {

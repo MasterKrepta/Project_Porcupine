@@ -19,9 +19,7 @@ public class FurnitureSpriteController : MonoBehaviour {
         //Instantiate Dictionary to track data to objects
         
         furnitureGOMap = new Dictionary<Furniture, GameObject>();
-
-     
-       
+  
        World.RegisterFurniture(OnFurnitureCreated);
         
     }
@@ -46,9 +44,7 @@ public class FurnitureSpriteController : MonoBehaviour {
         
         furn_go.transform.SetParent(this.transform, true);
 
-        //todo  : fix me
-        
-        //obj_go.AddComponent<SpriteRenderer>().sprite = installedObjSprites["Wall_"] ; // TODO   : fix me
+
         furn_go.AddComponent<SpriteRenderer>().sprite = GetSpriteForFurniture(furn);
         furn_go.GetComponent<SpriteRenderer>().sortingLayerName = "Wall";
 
@@ -68,7 +64,7 @@ public class FurnitureSpriteController : MonoBehaviour {
         furn_go.GetComponent<SpriteRenderer>().sortingLayerName = "Wall";
     }
 
-    Sprite GetSpriteForFurniture(Furniture furn) {
+    public Sprite GetSpriteForFurniture(Furniture furn) {
         if(furn.LinksToNeighbour == false)
             return furnitureSprites[furn.ObjectType];
 
@@ -112,5 +108,15 @@ public class FurnitureSpriteController : MonoBehaviour {
         }
         return furnitureSprites[spriteName];
     }
+    public Sprite GetSpriteForFurniture(string objType) {
+        if (furnitureSprites.ContainsKey(objType)) {
+            return furnitureSprites[objType];
+        }
+        if (furnitureSprites.ContainsKey(objType +"_")) {
+            return furnitureSprites[objType+"_"];
+        }
 
+        Debug.LogError("No sprite with name:" + objType);
+        return null;
+    }
 }

@@ -37,7 +37,7 @@ public class BuildModeController : MonoBehaviour {
             if (WorldController.Instance.World.IsFurniturePlacementValid(furnitureType, t) &&
                     t.pendingFurnitureJob == null) {
 
-                Job j = new Job(t, (theJob) => {
+                Job j = new Job(t, furnitureType, (theJob) => {
                     WorldController.Instance.World.PlaceFurniture(furnitureType, theJob.Tile);
                     t.pendingFurnitureJob = null;
                 });
@@ -47,7 +47,7 @@ public class BuildModeController : MonoBehaviour {
                 j.RegisterJobCancel((theJob) => { theJob.Tile.pendingFurnitureJob = null; });
 
                 WorldController.Instance.World.JobQueue.Enqueue(j);
-                Debug.Log("Queue Size: " + WorldController.Instance.World.JobQueue.Count);
+                
             }
         }
         else {

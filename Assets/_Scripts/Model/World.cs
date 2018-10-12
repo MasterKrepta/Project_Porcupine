@@ -12,8 +12,9 @@ public class World {
     Action<Furniture> cbFurniture;
     Action<Tile> cbTileChanged;
 
+    JobQueue jobQueue;
     //TODO will proboboly be replaced with dedicated job queue class
-    Queue<Job> jobQueue;
+
 
     int width;
     int height;
@@ -36,7 +37,7 @@ public class World {
         }
     }
 
-    public Queue<Job> JobQueue {
+    public JobQueue JobQueue {
         get {
             return jobQueue;
         }
@@ -47,7 +48,7 @@ public class World {
     }
 
     public World(int width = 100, int height = 100) {
-        JobQueue = new Queue<Job>();
+        JobQueue = new JobQueue();
 
         this.Width = width;
         this.Height = height;
@@ -146,6 +147,13 @@ public class World {
 
     public bool IsFurniturePlacementValid(string furnType, Tile t) {
         return furnPrototypes[furnType].IsValidPosition(t);
+    }
+
+    public Furniture GetFurnProto(string objType) {
+        if (furnPrototypes.ContainsKey(objType) == false) {
+            Debug.LogError("No Furniture with type " + objType);
+        }
+        return furnPrototypes[objType];
     }
 }
 

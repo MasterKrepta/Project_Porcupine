@@ -6,7 +6,6 @@ using System.Linq;
 
 public class WorldController : MonoBehaviour {
 
-    
      static WorldController _instance;
     public static WorldController Instance { get; protected set; }
 
@@ -30,5 +29,4 @@ public class WorldController : MonoBehaviour {
 
         return WorldController.Instance.World.GetTileAt(x, y);
     }
-
 }
