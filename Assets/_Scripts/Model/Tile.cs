@@ -98,4 +98,23 @@ public class Tile {
         return true;
     }
 
+    public bool IsNeighbour(Tile tile, bool diagOkay = false) {
+        if (this.x == tile.X && (this.y == tile.Y+1 || this.Y == tile.Y-1)) {
+            return true;
+        }
+
+        if (this.Y == tile.Y && (this.X == tile.X + 1 || this.X == tile.X - 1)) {
+            return true;
+        }
+
+        if (diagOkay) {
+            if (this.x == tile.X + 1 && (this.y == tile.Y + 1 || this.Y == tile.Y - 1))
+                return true;
+            if (this.x == tile.X - 1 && (this.y == tile.Y + 1 || this.Y == tile.Y - 1))
+                return true;
+        }
+
+        return false;
+        
+    }
 }

@@ -7,9 +7,11 @@ using UnityEngine;
 public class World {
 
     Tile[,] tiles;
+    List<Character> characters;
 
     Dictionary<string, Furniture> furnPrototypes;
     Action<Furniture> cbFurniture;
+    Action<Character> cbCharacter;
     Action<Tile> cbTileChanged;
 
     JobQueue jobQueue;
@@ -65,6 +67,17 @@ public class World {
 
 
         CreateFurnPrototypes();
+
+        characters = new List<Character>();
+        
+    }
+
+    public void CreateCharacter(Tile t) {
+        Character c = new Character(t);
+        if (cbCharacter != null) {
+
+        }
+        cbCharacter(c);
     }
 
     void CreateFurnPrototypes() {
@@ -137,6 +150,12 @@ public class World {
         cbTileChanged -= callback;
     }
 
+    public void RegisterCharacter(Action<Character> callback) {
+        cbCharacter += callback;
+    }
+    public void UnRegisterCharacter(Action<Character> callback) {
+        cbCharacter -= callback;
+    }
     public void OnTileChanged(Tile t) {
         if (cbTileChanged == null)
             return;

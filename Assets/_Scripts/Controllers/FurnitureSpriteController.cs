@@ -45,8 +45,9 @@ public class FurnitureSpriteController : MonoBehaviour {
         furn_go.transform.SetParent(this.transform, true);
 
 
-        furn_go.AddComponent<SpriteRenderer>().sprite = GetSpriteForFurniture(furn);
-        furn_go.GetComponent<SpriteRenderer>().sortingLayerName = "Wall";
+         SpriteRenderer sr = furn_go.AddComponent<SpriteRenderer>();
+        sr.sprite =  GetSpriteForFurniture(furn);
+        sr.sortingLayerName = "Wall";
 
         furn.RegisterOnChanged(OnFurnitureChanged);
     }

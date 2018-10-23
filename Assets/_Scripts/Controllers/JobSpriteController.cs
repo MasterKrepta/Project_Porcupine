@@ -30,7 +30,7 @@ public class JobSpriteController : MonoBehaviour {
 
         SpriteRenderer sr =  job_go.AddComponent<SpriteRenderer>();
         sr.sprite = fsc.GetSpriteForFurniture(j.jobObjectType); 
-        sr.sortingLayerName = "Wall";
+        sr.sortingLayerName = "Jobs";
         sr.color = new Color(0.5f, 1f, 0.5f, 0.25f);
         
         j.RegisterJobComplete(OnJobEnded);

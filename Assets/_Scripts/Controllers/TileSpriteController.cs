@@ -30,7 +30,8 @@ public class TileSpriteController : MonoBehaviour {
                 tile_go.transform.position = new Vector3(tile_data.X, tile_data.Y, 0);
                 tile_go.transform.SetParent(this.transform, true);
                 //ADD renderer but dont set sprite yet
-                tile_go.AddComponent<SpriteRenderer>().sprite = emptySprite;
+                SpriteRenderer sr = tile_go.AddComponent<SpriteRenderer>();
+                sr.sprite = emptySprite;
             }
         }
        World.RegisterTileChanged(OnTileChanged); 
