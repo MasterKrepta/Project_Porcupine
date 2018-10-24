@@ -20,7 +20,8 @@ public class CharacterSpriteController : MonoBehaviour {
 
         World.RegisterCharacter(OnCharacterCreated);
 
-        World.CreateCharacter(World.GetTileAt(World.Width / 2, World.Height / 2));
+        Character c = World.CreateCharacter(World.GetTileAt(World.Width / 2, World.Height / 2));
+        //c.SetDest(World.GetTileAt(World.Width / 2 + 5, World.Height / 2));
     }
 
     private void LoadSprites() {
@@ -39,7 +40,7 @@ public class CharacterSpriteController : MonoBehaviour {
 
         char_go.name = "Character";
 
-        char_go.transform.position = new Vector3(c.currTile.X, c.currTile.Y, 0);
+        char_go.transform.position = new Vector3(c.X, c.Y, 0);
 
         char_go.transform.SetParent(this.transform, true);
 
@@ -48,20 +49,20 @@ public class CharacterSpriteController : MonoBehaviour {
         sr.sprite = characterSprites["p1_front"];
         sr.sortingLayerName = "Characters";
 
-        //c.RegisterOnChanged(OnFurnitureChanged);
+        c.RegisterOnChanged(OnCharacterChanged);
     }
 
-    //void OnFurnitureChanged(Furniture furn) {
+    void OnCharacterChanged(Character c) {
 
-    //    //Make sure furniture graphics are correct
-    //    if (characterGOMap.ContainsKey(furn) == false) {
-    //        Debug.LogError("OnFurnitureChanged: -- trying to change visuals for furniture not in map");
-    //        return;
-    //    }
+        //Make sure furniture graphics are correct
+        if (characterGOMap.ContainsKey(c) == false) {
+            Debug.LogError("OnCharacterChanged: -- trying to change visuals for character not in map");
+            return;
+        }
 
-    //    GameObject furn_go = characterGOMap[furn];
-    //    furn_go.GetComponent<SpriteRenderer>().sprite = GetSpriteForFurniture(furn);
-    //    furn_go.GetComponent<SpriteRenderer>().sortingLayerName = "Wall";
-    //}
+        GameObject char_go = characterGOMap[c];
+
+        char_go.transform.position = new Vector3(c.X, c.Y, 0);
+    }
 
 }

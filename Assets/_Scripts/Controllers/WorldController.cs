@@ -23,6 +23,11 @@ public class WorldController : MonoBehaviour {
         Camera.main.transform.position = new Vector3(World.Width / 2, World.Height / 2, Camera.main.transform.position.z);
     }
 
+    private void Update() {
+        //TODO add pause and speed controlls
+        World.Update(Time.deltaTime);
+    }
+
     public Tile GetTileAtWorldCor(Vector3 coord) {
         int x = Mathf.FloorToInt(coord.x);
         int y = Mathf.FloorToInt(coord.y);
