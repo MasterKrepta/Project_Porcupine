@@ -34,7 +34,6 @@ public class Character  {
     Job myJob;
     
     public void Update(float deltaTime) {
-        //Debug.Log("Char Update");
 
         if (myJob == null) {
             //Grab job
@@ -62,7 +61,6 @@ public class Character  {
         movementPercentage += percThisFram;
 
         if (movementPercentage >= 1) {
-            //We arrived
             currTile = destTile;
             movementPercentage = 0;
             //TODO? Should we retain overshot movement?

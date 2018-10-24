@@ -99,22 +99,27 @@ public class Tile {
     }
 
     public bool IsNeighbour(Tile tile, bool diagOkay = false) {
-        if (this.x == tile.X && (this.y == tile.Y+1 || this.Y == tile.Y-1)) {
-            return true;
-        }
 
-        if (this.Y == tile.Y && (this.X == tile.X + 1 || this.X == tile.X - 1)) {
-            return true;
-        }
+        //One line solution - Do we have a differance of exactly one between the two coords
+            return Mathf.Abs(this.X - tile.X) + Mathf.Abs(this.Y - tile.Y) == 1 ||
+                (diagOkay && (Mathf.Abs(this.X - tile.X) == 1 && Mathf.Abs(this.Y - tile.Y) == 1));
 
-        if (diagOkay) {
-            if (this.x == tile.X + 1 && (this.y == tile.Y + 1 || this.Y == tile.Y - 1))
-                return true;
-            if (this.x == tile.X - 1 && (this.y == tile.Y + 1 || this.Y == tile.Y - 1))
-                return true;
-        }
+        //if (this.x == tile.X && (Mathf.Abs(this.Y - tile.Y) == 1)) {
+        //    return true;
+        //}
 
-        return false;
+        //if (this.Y == tile.Y && (Mathf.Abs(this.X - tile.X) == 1)) {
+        //    return true;
+        //}
+
+        //if (diagOkay) {
+        //    if (this.x == tile.X + 1 && (this.y == tile.Y + 1 || this.Y == tile.Y - 1))
+        //        return true;
+        //    if (this.x == tile.X - 1 && (this.y == tile.Y + 1 || this.Y == tile.Y - 1))
+        //        return true;
+        //}
+
+        //return false;
         
     }
 }

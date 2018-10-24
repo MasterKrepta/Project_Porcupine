@@ -31,6 +31,7 @@ public class Job  {
         this.Tile = tile;
         this.jobObjectType = jobObjectType;
         this.cbJobComplete += cbJobComplete;
+        this.jobTime = jobTime;
     }
 
     public void RegisterJobComplete(Action<Job> cb) {

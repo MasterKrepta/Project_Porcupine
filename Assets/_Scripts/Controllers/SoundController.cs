@@ -16,7 +16,6 @@ public class SoundController : MonoBehaviour {
     }
 
     void OnTileChanged(Tile tile_data) {
-
         if(soundCooldown > 0) {
             return;
         }
