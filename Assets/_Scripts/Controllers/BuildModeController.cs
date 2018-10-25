@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class BuildModeController : MonoBehaviour {
  
+    
+    
     bool buildModeIsObjects = false;
     TileType buildModeTile = TileType.FLOOR;
     string buildModeObjType;
@@ -12,7 +14,13 @@ public class BuildModeController : MonoBehaviour {
     void OnFurnitureJobComplete(string furnitureType, Tile t) {
         
     }
+    
+    public void BuildPathfinding() {
+        WorldController.Instance.World.SetupPathfindingExample();
 
+        Path_TileGraph tileGraph = new Path_TileGraph(WorldController.Instance.World);
+    }
+    
     public void SetMode_BuildFloor() {
         buildModeIsObjects = false;
         buildModeTile = TileType.FLOOR;

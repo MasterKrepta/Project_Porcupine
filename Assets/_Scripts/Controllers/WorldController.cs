@@ -24,7 +24,7 @@ public class WorldController : MonoBehaviour {
     }
 
     private void Update() {
-        //TODO add pause and speed controlls
+        //TODO add pause and speed controls
         World.Update(Time.deltaTime);
     }
 

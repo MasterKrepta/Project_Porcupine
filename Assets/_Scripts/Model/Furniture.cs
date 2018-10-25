@@ -11,7 +11,7 @@ public class Furniture
 
     string objectType;
 
-    float movementCost = 1f;
+    public float movementCost = 1f;
 
     int width;
     int height;

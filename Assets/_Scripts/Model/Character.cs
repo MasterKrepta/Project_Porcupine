@@ -61,6 +61,7 @@ public class Character  {
         movementPercentage += percThisFram;
 
         if (movementPercentage >= 1) {
+            //TODO get next tile from Pathfinding, unless there are no more
             currTile = destTile;
             movementPercentage = 0;
             //TODO? Should we retain overshot movement?

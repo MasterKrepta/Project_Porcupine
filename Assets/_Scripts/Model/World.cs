@@ -9,6 +9,8 @@ public class World {
     Tile[,] tiles;
     List<Character> characters;
 
+    Path_TileGraph tileGraph;
+
     Dictionary<string, Furniture> furnPrototypes;
     Action<Furniture> cbFurniture;
     Action<Character> cbCharacter;
@@ -114,11 +116,25 @@ public class World {
         }
         if (cbFurniture != null) {
             cbFurniture(obj);
+            InvalidateTileGraph();
         }
         
     }
 
-    
+    public void SetupPathfindingExample() {
+        int l = width / 2 - 5;
+        int b = height / 2 - 5;
+
+        for (int x = l-5; x < l+15; x++) {
+            for (int y = b-5; y < b+15; y++) {
+                tiles[x, y].Type = TileType.FLOOR;
+
+                if (x==l || x == (l+9) || y == b || y == (b+9)){
+                    PlaceFurniture("Wall", tiles[x, y]);
+                }
+            }
+        }
+    }
 
         public void RandomizeTiles() {
         //Debug.Log("Tiles randomized");
@@ -169,7 +185,12 @@ public class World {
             return;
 
         cbTileChanged(t);
+        InvalidateTileGraph();
 
+    }
+    //called whenever the world is changed in a way that ruins pathfinding (Walls furniture)
+    public void InvalidateTileGraph() {
+        tileGraph = null;
     }
 
     public bool IsFurniturePlacementValid(string furnType, Tile t) {
