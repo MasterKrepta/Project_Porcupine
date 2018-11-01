@@ -9,7 +9,7 @@ public class World {
     Tile[,] tiles;
     List<Character> characters;
 
-    Path_TileGraph tileGraph;
+    public Path_TileGraph tileGraph;
 
     Dictionary<string, Furniture> furnPrototypes;
     Action<Furniture> cbFurniture;
